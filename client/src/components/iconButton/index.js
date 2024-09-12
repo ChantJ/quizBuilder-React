@@ -1,6 +1,6 @@
 import {  PlusOutlined } from "@ant-design/icons";
 
-const AddButton = ({ title, onClick, icon }) => {
+const IconButton = ({ title, onClick, icon }) => {
     let Icon = icon || PlusOutlined
   return (
     <div className="btn-container" style={{ paddingRight: 10 }} onClick={onClick}>
@@ -12,4 +12,4 @@ const AddButton = ({ title, onClick, icon }) => {
   );
 };
 
-export default AddButton;
+export default IconButton;

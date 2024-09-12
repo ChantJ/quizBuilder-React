@@ -1,32 +1,29 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import styled from "styled-components";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Input } from "antd";
 import {
   selectLoginError,
   selectLoginStatus,
   resetErrorMessage,
 } from "store/auth";
 import { loginRequestAsync, registerRequest } from "store/auth/asyncActions";
-import { useForm } from "react-hook-form";
-import { Input, Button } from "antd";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import { loginTypes, Colors, Status } from "constants/index";
-import styled from "styled-components";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { toast } from "react-toastify";
+import { loginLabels, loginFields, Colors, Status } from "constants/index";
 import { InputField, ErrorMessage, BtnContainer } from "containers";
 import Header from "components/header";
 
 const loginSchema = () =>
   Yup.object().shape({
-    password: Yup.string().when("type", {
-      is: loginTypes.LOGIN,
-      then: Yup.string().required("required"),
-    }),
+    password: Yup.string().required("required"),
     email: Yup.string().required("required"),
-    password_confirmation: Yup.string().when("type", {
-      is: loginTypes.REGISTER,
+    password_confirmation: Yup.string().when("signup", {
+      is: true,
       then: Yup.string()
         .required("required")
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
@@ -38,10 +35,9 @@ const Login = () => {
   const history = useNavigate();
   const loginError = useSelector(selectLoginError);
   const loginStatus = useSelector(selectLoginStatus);
-  const [type, setType] = useState(loginTypes.LOGIN);
 
   useEffect(() => {
-    if (loginStatus === Status.SUCCEEDED) history("../home", {replace: true});
+    if (loginStatus === Status.SUCCEEDED) history("../home", { replace: true });
   }, [history, loginStatus]);
 
   useEffect(() => {
@@ -56,27 +52,28 @@ const Login = () => {
     handleSubmit,
     setValue,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       email: "",
       password: "",
-      type: loginTypes.LOGIN,
+      signup: false,
       password_confirmation: "",
     },
     resolver: yupResolver(loginSchema()),
   });
 
+  const signup = watch("signup");
+  
   const onSubmit = handleSubmit((data) => {
     const { email, password } = data;
-    if (type === loginTypes.LOGIN)
-      dispatch(loginRequestAsync({ email, password }));
+    if (!signup) dispatch(loginRequestAsync({ email, password }));
     else dispatch(registerRequest({ email, password }));
   });
 
-  const handleTypeChange = (newType) => {
-    setValue("type", newType);
-    setType(newType);
+  const handleTypeChange = () => {
+    setValue("signup", !signup);
     clearErrors();
   };
 
@@ -84,6 +81,7 @@ const Login = () => {
     const { name, value } = e.target;
     setValue(name, value);
   };
+
   return (
     <div className="w-100 h-100">
       <Header title="Quiz Builder" />
@@ -111,7 +109,7 @@ const Login = () => {
             <ErrorMessage>{errors.password.message}</ErrorMessage>
           )}
         </InputField>
-        {type === loginTypes.REGISTER && (
+        {signup && (
           <InputField>
             <label>Confirm Password</label>
             <Input.Password
@@ -130,24 +128,13 @@ const Login = () => {
           </InputField>
         )}
         <BtnContainer type="primary" onClick={onSubmit}>
-          {type}
+          {loginLabels[!signup].btnText}
         </BtnContainer>
         <Register>
-          {type === loginTypes.LOGIN ? (
-            <>
-              <div>not registered yet ?</div>
-              <SignUp onClick={() => handleTypeChange(loginTypes.REGISTER)}>
-                sign up
-              </SignUp>
-            </>
-          ) : (
-            <>
-              <div>already have an account ?</div>
-              <SignUp onClick={() => handleTypeChange(loginTypes.LOGIN)}>
-                login
-              </SignUp>
-            </>
-          )}
+          <div>{loginLabels[signup].text}</div>
+          <SignUp onClick={() => handleTypeChange()}>
+            {loginLabels[signup].btnText}
+          </SignUp>
         </Register>
       </BodyWrapper>
     </div>

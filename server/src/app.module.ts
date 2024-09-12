@@ -9,7 +9,16 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { QuizzesModule } from './quizzes/quizzes.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), AuthModule, UsersModule, QuizzesModule],
+  imports: [TypeOrmModule.forRoot( {
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'shantjoulfaian',
+    password: '0000',
+    database: 'quiz',
+    entities: ['dist/**/*.entity{.ts,.js}'],
+    synchronize: true,
+  }), AuthModule, UsersModule, QuizzesModule],
   controllers: [AppController],
   providers: [
     AppService,

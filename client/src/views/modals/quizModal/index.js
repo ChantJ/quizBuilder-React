@@ -5,7 +5,7 @@ import Header from "components/header";
 import { Input } from "antd";
 import { InputField, ErrorMessage } from "containers";
 import QuizModalQuestions from "./quizModalQuestions";
-import AddButton from "components/addButton";
+import IconButton from "components/iconButton";
 import ModalComponent from "components/modal";
 import QuestionModal from "views/modals/questionModal";
 import FooterButtons from "components/footerButtons";
@@ -52,7 +52,7 @@ const QuizModal = ({ number, handleCancel, handleSubmit, quiz }) => {
     if (!title) setErrors({ title: "Required" });
     else if (!questions.length)
       setErrors({
-        questions: "There should be at least 1 question to be publish",
+        questions: "There should be at least 1 question to publish",
       });
     else {
       handleSubmit({ title, questions: JSON.stringify(questions) });
@@ -71,10 +71,9 @@ const QuizModal = ({ number, handleCancel, handleSubmit, quiz }) => {
     handleCancel();
   };
   return (
-    <Container>
+    <div>
       <Header
         className="modal-header"
-        titleWidth={"300px"}
         title={`Quiz ${number}`}
         bgdColor={Colors.dark_blue}
       />
@@ -102,7 +101,7 @@ const QuizModal = ({ number, handleCancel, handleSubmit, quiz }) => {
           />
           {errors.questions && <ErrorMessage>{errors.questions}</ErrorMessage>}
           {questions.length < 10 && !disable && (
-            <AddButton
+            <IconButton
               title="Question"
               onClick={() => setShowQuestionModal(true)}
             />
@@ -116,32 +115,24 @@ const QuizModal = ({ number, handleCancel, handleSubmit, quiz }) => {
         onCancel={onCancel}
       />
       <ModalComponent isVisible={showQuestionModal} className="question-modal">
-        {showQuestionModal && (
-          <QuestionModal
-            number={questions.length + 1}
-            handleCancel={() => setShowQuestionModal(false)}
-            handleSubmitQuestion={handleSubmitQuestion}
-            questionToEdit={questionToEdit}
-          />
-        )}
+        <QuestionModal
+          number={questions.length + 1}
+          handleCancel={() => setShowQuestionModal(false)}
+          handleSubmitQuestion={handleSubmitQuestion}
+          questionToEdit={questionToEdit}
+        />
       </ModalComponent>
-    </Container>
+    </div>
   );
 };
 
 export default QuizModal;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 60px 30px 30px;
-
   & label {
     font-size: 18px;
   }

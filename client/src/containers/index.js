@@ -2,23 +2,6 @@ import styled from "styled-components";
 import { Colors } from "constants/index";
 import { Button } from "antd";
 
-export const Title = styled.div`
-  position: absolute;
-  top: 40px;
-  z-index: 1;
-  height: 85px;
-  font-size: 54px;
-  align-items: center;
-  font-weight: 800;
-  background: ${Colors.light_sea_green};
-  align-self: center;
-  box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.2);
-  width: ${(props) => props.width || "600px"};
-  display: flex;
-  justify-content: center;
-  color: ${Colors.white};
-`;
-
 export const VerticalCenteredFlex = styled.div`
   display: flex;
   align-items: center;
@@ -41,6 +24,9 @@ export const InputField = styled.div`
   }
   margin-bottom: 20px;
   width: ${(props) => props.width || "700px"};
+  @media (max-width: 900px) {
+    width: ${(props) => props.width || "80%"};
+  }
 `;
 
 export const ErrorMessage = styled.div`
@@ -59,5 +45,9 @@ export const BtnContainer = styled(Button)`
   &:hover {
     background: ${Colors.light_sea_green};
     color: ${Colors.white};
+  }
+
+  @media (max-width: 900px) {
+    width: ${(props) => props.width || "80%"};
   }
 `;

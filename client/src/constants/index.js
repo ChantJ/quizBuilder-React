@@ -1,4 +1,4 @@
 export * from './status'
-export * from './loginTypes'
+export * from './loginTexts'
 export * from './color'
 export const backendUrl = 'http://localhost:3001/'

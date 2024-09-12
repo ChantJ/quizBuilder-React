@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input, Checkbox } from "antd";
 import { InputField, ErrorMessage } from "containers";
-import AddButton from "components/addButton";
+import IconButton from "components/iconButton";
 import QuestionOptionForm from "./questionOptionForm";
 import QuestionOptionsWrapper from "views/modals/common/optionsWrapper";
 import FooterButtons from "components/footerButtons";
@@ -86,9 +86,8 @@ const QuestionModal = ({
     <Container>
       <div style={{ fontSize: 28, fontWeight: 800 }}>Question {number}</div>
       <InputField width={"100%"}>
-        <label>Quiz Title</label>
         <Input
-          placeholder="enter a quiz title"
+          placeholder="enter your question"
           value={form.title}
           onChange={(e) => {
             handleChange("title", e.target.value);
@@ -127,7 +126,7 @@ const QuestionModal = ({
         )}
         {errors.options && <ErrorMessage>{errors.options}</ErrorMessage>}
         {form.options.length < 5 && (
-          <AddButton title="Option" onClick={() => setShowOptionInput(true)} />
+          <IconButton title="Option" onClick={() => setShowOptionInput(true)} />
         )}
       </InputField>
       <FooterButtons

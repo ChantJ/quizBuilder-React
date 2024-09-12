@@ -4,7 +4,7 @@ import { LogoutOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import Quizzes from "./quizzes";
 import Header from "components/header";
-import AddButton from "components/addButton";
+import IconButton from "components/iconButton";
 import {
   selectCreateQuizzMessage,
   selectQuizError,
@@ -56,8 +56,8 @@ const Home = () => {
     <div className="d-flex flex-column h-100">
       <Header className="px-5" title={"Published Quizzes"}>
         <div className="w-100 d-flex justify-content-between">
-          <AddButton title="Quiz" onClick={() => setShowQuizModal(true)} />
-          <AddButton
+          <IconButton title="Quiz" onClick={() => setShowQuizModal(true)} />
+          <IconButton
             title="Logout"
             icon={LogoutOutlined}
             onClick={handleLogout}
