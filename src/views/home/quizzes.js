@@ -44,7 +44,7 @@ const Quizzes = ({ setShowQuizModal, showQuizModal }) => {
 
   return (
     <div className="quizzes-container">
-      {myQuizzes.map((quiz, index) => (
+      {myQuizzes?.map((quiz, index) => (
         <div
           className="quiz-container d-flex flex-column gap-2"
           key={index}
